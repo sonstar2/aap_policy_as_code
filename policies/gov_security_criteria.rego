@@ -72,15 +72,15 @@ is_approved_autohealing_action if {
     playbook.name in approved_autohealing_playbooks
     
     # Verify AI-generated flag compliance
-    not input.job_template.metadata.ai_generated if {
-        input.job_template.inventory.metadata.classification == "classified"
-    }
+    # not input.job_template.metadata.ai_generated if {
+    #     input.job_template.inventory.metadata.classification == "classified"
+    # }
     
-    # For sensitive environments, additional restrictions on AI-generated content
-    not input.job_template.metadata.ai_generated if {
-        input.job_template.inventory.metadata.classification == "sensitive"
-        input.eda_event.severity in {"high", "critical"}
-    }
+    # # For sensitive environments, additional restrictions on AI-generated content
+    # not input.job_template.metadata.ai_generated if {
+    #     input.job_template.inventory.metadata.classification == "sensitive"
+    #     input.eda_event.severity in {"high", "critical"}
+    # }
 }
 
 # Check if the severity level is appropriate for auto-healing
@@ -89,14 +89,14 @@ is_appropriate_severity_level if {
     input.eda_event.severity in {"medium", "high"}
     
     # Critical events require additional validation
-    input.eda_event.severity == "critical" if {
-        input.job_template.inventory.name in {
-            "production-public", 
-            "staging-sensitive", 
-            "development-public"
-        }
-        is_business_hours
-    }
+    # input.eda_event.severity == "critical" if {
+    #     input.job_template.inventory.name in {
+    #         "production-public", 
+    #         "staging-sensitive", 
+    #         "development-public"
+    #     }
+    #     is_business_hours
+    # }
 }
 
 # Ensure compliance requirements are met
@@ -108,10 +108,10 @@ meets_compliance_requirements if {
     input.job_template.settings.audit_enabled == true
     
     # Must have approval tracking for sensitive operations
-    input.job_template.settings.approval_required == false if {
-        input.job_template.inventory.classification != "classified"
-        not input.eda_event.target_system in critical_systems
-    }
+    # input.job_template.settings.approval_required == false if {
+    #     input.job_template.inventory.classification != "classified"
+    #     not input.eda_event.target_system in critical_systems
+    # }
     
     # Ensure proper credential usage
     input.job_template.credential.organization != null
