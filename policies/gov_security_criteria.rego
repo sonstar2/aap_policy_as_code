@@ -73,12 +73,12 @@ is_approved_autohealing_action if {
     
     # Verify AI-generated flag compliance
     not input.job_template.metadata.ai_generated if {
-        input.job_template.inventory.classification == "classified"
+        input.job_template.inventory.metadata.classification == "classified"
     }
     
     # For sensitive environments, additional restrictions on AI-generated content
     not input.job_template.metadata.ai_generated if {
-        input.job_template.inventory.classification == "sensitive"
+        input.job_template.inventory.metadata.classification == "sensitive"
         input.eda_event.severity in {"high", "critical"}
     }
 }
@@ -108,7 +108,7 @@ meets_compliance_requirements if {
     input.job_template.settings.audit_enabled == true
     
     # Must have approval tracking for sensitive operations
-    input.job_template.metadata.approval_required == false if {
+    input.job_template.settings.approval_required == false if {
         input.job_template.inventory.classification != "classified"
         not input.eda_event.target_system in critical_systems
     }
