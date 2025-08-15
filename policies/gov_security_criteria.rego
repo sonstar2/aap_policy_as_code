@@ -60,10 +60,10 @@ is_valid_government_environment if {
     input.job_template.inventory.name in government_environments
     
     # Additional validation for classified environments
-    input.job_template.inventory.name != "production-classified" if {
-        input.eda_event.severity != "critical"
-    }
-}
+#     input.job_template.inventory.name != "production-classified" if {
+#         input.eda_event.severity != "critical"
+#     }
+# }
 
 # Verify the playbook is approved for government auto-healing
 is_approved_autohealing_action if {
