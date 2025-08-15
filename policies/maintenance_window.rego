@@ -12,14 +12,14 @@ created_hour_utc := created_clock[0]
 
 # Check if job was created within the plan change window (UTC)
 is_plan_change_time if {
-	print("created_hour_utc: ", created_hour_utc)
-	print("plan_change_start_hour: ", plan_change_start_hour)
+	# print("created_hour_utc: ", created_hour_utc)
+	# print("plan_change_start_hour: ", plan_change_start_hour)
 	created_hour_utc >= plan_change_start_hour # After 12:00 UTC
 }
 
 is_plan_change_time if {
-	print("created_hour_utc: ", created_hour_utc)
-	print("plan_change_end_hour: ", plan_change_end_hour)
+	# print("created_hour_utc: ", created_hour_utc)
+	# print("plan_change_end_hour: ", plan_change_end_hour)
 	created_hour_utc <= plan_change_end_hour # Before or at 04:00 UTC
 }
 
