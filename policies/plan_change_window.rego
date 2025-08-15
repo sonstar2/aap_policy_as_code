@@ -3,7 +3,7 @@ package policies
 # Define plan change window in UTC
 plan_change_start_hour := 12 # 12:00 UTC (5 PM EST)
 
-plan_change_end_hour := 9 # 04:00 UTC (9 AM EST)
+plan_change_end_hour := 7 # 04:00 UTC (9 AM EST)
 
 # Extract the job creation timestamp (which is in UTC)
 created_clock := time.clock(time.parse_rfc3339_ns(input.created)) # returns [hour, minute, second]
