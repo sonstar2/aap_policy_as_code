@@ -5,8 +5,8 @@
   shell: |
     find {{ opa_policies_dir }} -name "*.rego" -exec opa fmt --diff {} \;
     opa test {{ opa_policies_dir }}
-  become: true
-  become_user: "{{ opa_user }}"
+  # become: true
+  # become_user: "{{ opa_user }}"
   when: validate_policies | bool
   listen: "validate opa policies"
 
@@ -14,6 +14,6 @@
   systemd:
     name: "{{ opa_service_name }}"
     state: reloaded
-  become: true
+  # become: true
   when: reload_opa_after_update | bool
   listen: "reload opa service"
