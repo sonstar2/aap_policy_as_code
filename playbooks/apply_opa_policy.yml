@@ -3,6 +3,6 @@
   hosts: "{{ opa_server | default('all') }}"
   gather_facts: yes
   become: yes
-  vars:
+  roles:
+    - role: ssa_demo.opa_server.plan_change_opa_policy
 
-  tasks:

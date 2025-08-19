@@ -3,7 +3,7 @@
   hosts: "{{ opa_server | default('all') }}"
   gather_facts: yes
   become: yes
-  ansible.builtin.import_role::
+  roles:
     - role: ssa_demo.opa_server.deploy
       vars:
         opa_version: "1.7.1"
