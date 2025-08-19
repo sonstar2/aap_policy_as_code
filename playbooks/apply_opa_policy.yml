@@ -3,6 +3,12 @@
   hosts: "{{ opa_server | default('all') }}"
   gather_facts: yes
   become: yes
+  pre_tasks:
+    - name: Convert ETC plan_change_start_hour to UTC hour
+      set_fact:
+        plan_change_start_hour: "{{ (plan_change_start_hour_etc + 5) % 24 }}"
+        plan_change_end_hour: "{{ (plan_change_end_hour_etc + 5) % 24 }}"
+
   roles:
     - role: ssa_demo.opa_server.plan_change_opa_policy
 
