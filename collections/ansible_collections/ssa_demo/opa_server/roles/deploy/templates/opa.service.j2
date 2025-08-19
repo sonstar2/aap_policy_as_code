@@ -13,7 +13,7 @@ ExecStart={{ opa_binary_path }} run \
   --config-file={{ opa_config_file }} \
   --log-level={{ opa_log_level }} \
   --log-format={{ opa_log_format }} \
-  {{ opa_policies_dir }}
+  --bundle {{ opa_policies_dir }}
 ExecReload=/bin/kill -HUP $MAINPID
 Restart=on-failure
 RestartSec=5

@@ -6,7 +6,7 @@ opa_user: "opa"
 opa_group: "opa"
 opa_home: "/opt/opa"
 opa_config_dir: "/etc/opa"
-opa_policies_dir: "/var/lib/opa/policies"
+opa_policies_dir: "/var/lib/opa"
 opa_log_dir: "/var/log/opa"
 opa_port: 8181
 opa_bind_address: "0.0.0.0"
