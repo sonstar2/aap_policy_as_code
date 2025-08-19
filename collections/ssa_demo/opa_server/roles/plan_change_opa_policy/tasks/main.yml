@@ -1,0 +1,41 @@
+---
+- name: Ensure OPA policies directory exists
+  file:
+    path: "{{ opa_policies_dir }}"
+    state: directory
+    owner: "{{ opa_user }}"
+    group: "{{ opa_group }}"
+    mode: '0755'
+  become: true
+
+- name: Deploy Rego policy templates
+  template:
+    src: "{{ item.template }}"
+    dest: "{{ opa_policies_dir }}/{{ item.dest_file }}"
+    owner: "{{ opa_user }}"
+    group: "{{ opa_group }}"
+    mode: '0644'
+    backup: true
+  loop: "{{ policy_files }}"
+  become: true
+  notify: 
+    - validate opa policies
+    - reload opa service
+  register: policy_deployment
+
+- name: Display policy deployment results
+  debug:
+    msg: "Policy {{ item.item.name }} deployed to {{ item.dest }}"
+  loop: "{{ policy_deployment.results }}"
+  when: item.changed
+
+- name: List deployed policies
+  find:
+    paths: "{{ opa_policies_dir }}"
+    patterns: "*.rego"
+  register: deployed_policies
+  become: true
+
+- name: Show deployed policy files
+  debug:
+    msg: "Deployed policies: {{ deployed_policies.files | map(attribute='path') | list }}"

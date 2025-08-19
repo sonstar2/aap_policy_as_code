@@ -1,0 +1,83 @@
+#SPDX-License-Identifier: MIT-0
+---
+# tasks file for deploy
+- name: Create OPA user
+  ansible.builtin.user:
+    name: "{{ opa_user }}"
+    group: "{{ opa_group }}"
+    system: true
+    home: "{{ opa_home }}"
+    shell: /bin/false
+    create_home: false
+  become: true
+
+- name: Create OPA group
+  ansible.builtin.group:
+    name: "{{ opa_group }}"
+    system: true
+  become: true
+
+- name: Create OPA directories
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ opa_user }}"
+    group: "{{ opa_group }}"
+    mode: '0755'
+  loop:
+    - "{{ opa_home }}"
+    - "{{ opa_config_dir }}"
+    - "{{ opa_policies_dir }}"
+    - "{{ opa_log_dir }}"
+  become: true
+
+- name: Download OPA binary
+  ansible.builtin.get_url:
+    url: "{{ opa_download_url }}"
+    dest: "{{ opa_binary_path }}"
+    owner: root
+    group: root
+    mode: '0755'
+    timeout: 30
+  become: true
+  notify: restart opa
+
+- name: Verify OPA binary
+  ansible.builtin.command: "{{ opa_binary_path }} version"
+  register: opa_version_output
+  changed_when: false
+
+- name: Display OPA version
+  ansible.builtin.debug:
+    msg: "OPA version: {{ opa_version_output.stdout }}"
+
+- name: Generate OPA configuration file
+  ansible.builtin.template:
+    src: opa-config.yaml.j2
+    dest: "{{ opa_config_file }}"
+    owner: "{{ opa_user }}"
+    group: "{{ opa_group }}"
+    mode: '0644'
+  become: true
+  notify: restart opa
+
+- name: Create OPA systemd service file
+  ansible.builtin.template:
+    src: opa.service.j2
+    dest: /etc/systemd/system/{{ opa_service_name }}.service
+    owner: root
+    group: root
+    mode: '0644'
+  become: true
+  notify:
+    - reload systemd
+    - restart opa
+
+- name: Enable and start OPA service
+  ansible.builtin.systemd:
+    name: "{{ opa_service_name }}"
+    enabled: "{{ opa_enable_service }}"
+    state: "{{ 'started' if opa_start_service else 'stopped' }}"
+    daemon_reload: true
+  become: true
+

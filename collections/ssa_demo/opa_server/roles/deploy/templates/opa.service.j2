@@ -1,0 +1,35 @@
+[Unit]
+Description=Open Policy Agent
+Documentation=https://www.openpolicyagent.org/docs/
+After=network.target
+
+[Service]
+Type=simple
+User={{ opa_user }}
+Group={{ opa_group }}
+ExecStart={{ opa_binary_path }} run \
+  --server \
+  --addr={{ opa_bind_address }}:{{ opa_port }} \
+  --config-file={{ opa_config_file }} \
+  --log-level={{ opa_log_level }} \
+  --log-format={{ opa_log_format }} \
+  {{ opa_policies_dir }}
+ExecReload=/bin/kill -HUP $MAINPID
+Restart=on-failure
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=opa
+
+# Security settings
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ReadWritePaths={{ opa_policies_dir }} {{ opa_log_dir }}
+ProtectHome=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+
+[Install]
+WantedBy=multi-user.target

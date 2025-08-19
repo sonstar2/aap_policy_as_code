@@ -1,0 +1,37 @@
+#SPDX-License-Identifier: MIT-0
+---
+# defaults file for deploy
+opa_version: "1.7.1"
+opa_user: "opa"
+opa_group: "opa"
+opa_home: "/opt/opa"
+opa_config_dir: "/etc/opa"
+opa_policies_dir: "/var/lib/opa/policies"
+opa_log_dir: "/var/log/opa"
+opa_port: 8181
+opa_bind_address: "0.0.0.0"
+opa_log_level: "info"
+opa_log_format: "json"
+
+# Binary download settings
+# opa_download_url: "https://github.com/open-policy-agent/opa/releases/v{{ opa_version }}/opa_linux_amd64_static"
+opa_download_url: "https://github.com/open-policy-agent/opa/releases/download/v{{ opa_version }}/opa_linux_amd64_static
+opa_binary_path: "/usr/local/bin/opa"
+
+# Service settings
+opa_enable_service: true
+opa_start_service: true
+
+# Configuration settings
+# opa_config:
+#   services:
+#     authz:
+#       url: http://bundle-server.example.com
+#   bundles:
+#     authz:
+#       service: authz
+#       resource: "bundles/http/example/authz.tar.gz"
+#       persist: true
+#       polling:
+#         min_delay_seconds: 10
+#         max_delay_seconds: 20

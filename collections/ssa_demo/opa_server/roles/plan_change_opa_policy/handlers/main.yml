@@ -1,0 +1,19 @@
+---
+# roles/opa-policies/handlers/main.yml
+
+- name: validate opa policies
+  shell: |
+    find {{ opa_policies_dir }} -name "*.rego" -exec opa fmt --diff {} \;
+    opa test {{ opa_policies_dir }}
+  become: true
+  become_user: "{{ opa_user }}"
+  when: validate_policies | bool
+  listen: "validate opa policies"
+
+- name: reload opa service
+  systemd:
+    name: "{{ opa_service_name }}"
+    state: reloaded
+  become: true
+  when: reload_opa_after_update | bool
+  listen: "reload opa service"

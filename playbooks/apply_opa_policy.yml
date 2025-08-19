@@ -1,0 +1,8 @@
+---
+- name: Deploy OPA Plan Change Window Policy
+  hosts: "{{ opa_server | default('all') }}"
+  gather_facts: yes
+  become: yes
+  vars:
+
+  tasks:

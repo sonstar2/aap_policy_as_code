@@ -1,0 +1,19 @@
+---
+- name: Deploy OPA Server
+  hosts: "{{ opa_server | default('all') }}"
+  gather_facts: yes
+  become: yes
+  ansible.builtin.import_role::
+    - role: ssa_demo.opa_server.deploy
+      vars:
+        opa_version: "1.7.1"
+        opa_port: 8181
+        opa_log_level: "debug"
+        # opa_config:
+        #   services:
+        #     bundle_service:
+        #       url: "http://your-bundle-server.com"
+        #   bundles:
+        #     my_bundle:
+        #       service: bundle_service
+        #       resource: "bundles/my-policies.tar.gz"

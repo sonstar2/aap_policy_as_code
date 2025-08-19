@@ -1,0 +1,5 @@
+#SPDX-License-Identifier: MIT-0
+---
+# vars file for deploy
+opa_service_name: "opa"
+opa_config_file: "{{ opa_config_dir }}/config.yaml"

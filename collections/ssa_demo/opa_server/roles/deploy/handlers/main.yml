@@ -1,0 +1,14 @@
+#SPDX-License-Identifier: MIT-0
+---
+# handlers file for deploy
+- name: reload systemd
+  systemd:
+    daemon_reload: true
+  become: true
+
+- name: restart opa
+  systemd:
+    name: "{{ opa_service_name }}"
+    state: restarted
+  become: true
+  when: opa_start_service | bool
