@@ -12,14 +12,17 @@ created_hour_utc := created_clock[0]
 is_plan_change_time if {
     print("created_hour_utc: ", created_hour_utc)
     print("plan_change_start_hour: ", plan_change_start_hour)
+    print("plan_change_end_hour: ", plan_change_end_hour)
     created_hour_utc >= plan_change_start_hour # After {{ plan_change_start_hour }}:00 UTC
+    created_hour_utc <= plan_change_end_hour # Before or at {{ plan_change_end_hour }}:00 UTC
+
 }
 
-is_plan_change_time if {
-    print("created_hour_utc: ", created_hour_utc)
-    print("plan_change_end_hour: ", plan_change_end_hour)
-    created_hour_utc <= plan_change_end_hour # Before or at {{ plan_change_end_hour }}:00 UTC
-}
+#is_plan_change_time if {
+#    print("created_hour_utc: ", created_hour_utc)
+#    print("plan_change_end_hour: ", plan_change_end_hour)
+#    created_hour_utc <= plan_change_end_hour # Before or at {{ plan_change_end_hour }}:00 UTC
+#}
 
 default plan_change_window := {
     "allowed": true,
