@@ -11,9 +11,9 @@ plan_change_end_hour: 7     # 07:00 UTC (2 AM EST)
 
 # Policy configuration
 policy_files:
-  - name: "plan-change-window"
-    template: "plan-change-window.rego.j2"
-    dest_file: "plan-change-window.rego"
+  - name: "plan_change_window"
+    template: "plan_change_window.rego.j2"
+    dest_file: "plan_change_window.rego"
 
 # Optional: Validation settings
 validate_policies: true
