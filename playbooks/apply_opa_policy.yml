@@ -14,8 +14,8 @@
 
     vars:
       # Get epoch timestamp and subtract 10 hours (AEST offset) to get UTC
-      aest_epoch_start: "{{ (aplan_change_start_time | to_datetime('%Y-%m-%d %H:%M:%S').timestamp() - 36000) | int }}"  # 36000 = 10 * 60 * 60 seconds
-      aest_epoch_end: "{{ (plan_change_end_time | to_datetime('%Y-%m-%d %H:%M:%S').timestamp() - 36000) | int }}"  # 36000 = 10 * 60 * 60 seconds
+      aest_epoch_start: "{{ ((aplan_change_start_time | to_datetime('%Y-%m-%d %H:%M:%S')).timestamp() - 36000) | int }}"  # 36000 = 10 * 60 * 60 seconds
+      aest_epoch_end: "{{ ((plan_change_end_time | to_datetime('%Y-%m-%d %H:%M:%S')).timestamp() - 36000) | int }}"  # 36000 = 10 * 60 * 60 seconds
       rfc3339_format: "%Y-%m-%dT%H:%M:%S.000000000Z"
 
   - name: Print plan change window configuration
