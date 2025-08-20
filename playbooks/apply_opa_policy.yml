@@ -17,3 +17,6 @@
 
   roles:
     - role: ssa_demo.opa_server.plan_change_opa_policy
+      vars:
+        plan_change_start_hour: "{{ plan_change_start_hour | int }}"
+        plan_change_end_hour: "{{ plan_change_end_hour | int }}"
