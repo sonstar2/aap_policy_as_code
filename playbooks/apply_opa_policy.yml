@@ -8,8 +8,11 @@
   # Input time format: 2025-07-24 22:00:00
   - name: Convert AEST plan_change_start_hour to UTC hour
     set_fact:
-      plan_change_start_hour: "{{ plan_change_start_time | ansible.builtin.strftime('%H', utc=true) | int }}"
-      plan_change_end_hour: "{{ plan_change_end_time | ansible.builtin.strftime('%H', utc=true) | int }}"
+      plan_change_start_hour: "{{ plan_change_start_time | ansible.builtin.to_datetime('%Y-%m-%d %H:%M:%S') | ansible.builtin.strftime('%H', utc=true) | int }}"
+      plan_change_end_hour: "{{ plan_change_end_time | ansible.builtin.to_datetime('%Y-%m-%d %H:%M:%S') | ansible.builtin.strftime('%H', utc=true) | int }}"
+
+  # Convert 2025-07-24 22:00:00 date format to UTC hour
+
 
   - name: Print plan change window configuration
     debug:
