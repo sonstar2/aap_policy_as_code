@@ -2,8 +2,8 @@
 - name: Validate plan change window hours
   assert:
     that:
-      - plan_change_start_hour >= 0 and plan_change_start_hour <= 23
-      - plan_change_end_hour >= 0 and plan_change_end_hour <= 23
+      - plan_change_start_hour | int >= 0 and plan_change_start_hour | int <= 23
+      - plan_change_end_hour | int >= 0 and plan_change_end_hour | int <= 23
       - plan_change_start_hour != plan_change_end_hour
     fail_msg: "Invalid plan change window hours. Must be 0-23 and start hour must be different from end hour."
     success_msg: "Plan change window hours validated successfully."
