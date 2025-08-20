@@ -11,9 +11,9 @@
   listen: "validate opa policies"
 
 - name: reload opa service
-  systemd:
+  ansible.builtin.systemd_service:
     name: "{{ opa_service_name }}"
-    state: reloaded
+    state: restarted
   # become: true
   when: reload_opa_after_update | bool
   listen: "reload opa service"
