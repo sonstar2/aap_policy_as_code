@@ -21,7 +21,7 @@
 
   - name: Print plan change window configuration
     debug:
-      msg: "Plan Change Window Configuration: Start Hour: {{ plan_change_start_time }} End Hour: {{ plan_change_end_time }}"
+      msg: "Plan Change Window Configuration: Start Hour: {{ plan_change_start_utc }} End Hour: {{ plan_change_end_utc }}"
 
   roles:
     - role: ssa_demo.opa_server.plan_change_opa_policy

@@ -1,11 +1,11 @@
 package policies
 
 # Define plan change window in UTC
-plan_change_start := {{ plan_change_start }}  # {{ plan_change_start_hour }}:00 UTC
-plan_change_end := {{ plan_change_end }}      # {{ plan_change_end_hour }}:00 UTC
+plan_change_start := "{{ plan_change_start }}"  # {{ plan_change_start_hour }}:00 UTC
+plan_change_end := "{{ plan_change_end }}"      # {{ plan_change_end_hour }}:00 UTC
 
 # Extract the job creation timestamp (which is in UTC)
-created_clock := time.parse_rfc3339_ns(input.created))
+created_clock := time.parse_rfc3339_ns(input.created)
 change_start := time.parse_rfc3339_ns(plan_change_start)
 change_end := time.parse_rfc3339_ns(plan_change_end)
 
@@ -28,13 +28,4 @@ plan_change_window := {
     "violations": ["No job execution allowed during plan change window ({{ plan_change_start }}:00 UTC - {{ plan_change_end }}:00 UTC)"],
 } if {
     is_plan_change_time
-}
-
-# Additional rule for better visibility
-plan_change_info := {
-    "window_start": {{ plan_change_start }},
-    "window_end": {{ plan_change_end }},
-    "current_clock": created_clock,
-    "in_window": is_plan_change_time,
-    "timezone": "UTC"
 }
