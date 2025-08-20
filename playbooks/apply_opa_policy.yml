@@ -5,18 +5,31 @@
   become: yes
 
   pre_tasks:  
-  # Input time format: 2025-07-24 22:00:00
-  - name: Convert AEST plan_change_start_hour to UTC hour
+  # date input format: "2024-07-02 23:14:46"
+
+  - name: Convert AEST datetime to UTC RFC3339 format
     set_fact:
-      plan_change_start_hour: "{{ (plan_change_start_time[11:13]|int - 10 + 24) % 24 }}"
-      plan_change_end_hour: "{{ (plan_change_end_time[11:13]|int - 10 + 24) % 24 }}"
+      plan_change_start_utc: "{{ rfc3339_format | strftime(aest_epoch_start, utc=true) }}"
+      plan_change_end_utc: "{{ rfc3339_format | strftime(aest_epoch_end, utc=true) }}"
+
+    vars:
+      # Parse AEST datetime to get epoch timestamp
+      aest_dt_start: "{{ plan_change_start_time | to_datetime('%Y-%m-%d %H:%M:%S') }}"
+      aest_dt_end: "{{ plan_change_end_time | to_datetime('%Y-%m-%d %H:%M:%S') }}"
+
+      # Get epoch timestamp and subtract 10 hours (AEST offset) to get UTC
+      aest_epoch_start: "{{ (aest_dt_start.timestamp() - 36000) | int }}"  # 36000 = 10 * 60 * 60 seconds
+      aest_epoch_end: "{{ (aest_dt_end.timestamp() - 36000) | int }}"  # 36000 = 10 * 60 * 60 seconds
+
+      # RFC3339 format with nanosecond precision for OPA
+      rfc3339_format: "%Y-%m-%dT%H:%M:%S.000000000Z"
 
   - name: Print plan change window configuration
     debug:
-      msg: "Plan Change Window Configuration: Start Hour: {{ plan_change_start_hour }} End Hour: {{ plan_change_end_hour }}"
+      msg: "Plan Change Window Configuration: Start Hour: {{ plan_change_start_time }} End Hour: {{ plan_change_end_time }}"
 
   roles:
     - role: ssa_demo.opa_server.plan_change_opa_policy
       vars:
-        plan_change_start_hour: "{{ plan_change_start_hour | int }}"
-        plan_change_end_hour: "{{ plan_change_end_hour | int }}"
+        plan_change_start: "{{ plan_change_start_utc }}"
+        plan_change_end: "{{ plan_change_end_utc }}"

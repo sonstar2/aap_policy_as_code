@@ -1,24 +1,24 @@
 ---
-- name: Validate plan change window hours
-  assert:
-    that:
-      - plan_change_start_hour | int >= 0 and plan_change_start_hour | int <= 23
-      - plan_change_end_hour | int >= 0 and plan_change_end_hour | int <= 23
-      - plan_change_start_hour != plan_change_end_hour
-    fail_msg: "Invalid plan change window hours. Must be 0-23 and start hour must be different from end hour."
-    success_msg: "Plan change window hours validated successfully."
+# - name: Validate plan change window hours
+#   assert:
+#     that:
+#       - plan_change_start_hour | int >= 0 and plan_change_start_hour | int <= 23
+#       - plan_change_end_hour | int >= 0 and plan_change_end_hour | int <= 23
+#       - plan_change_start_hour != plan_change_end_hour
+#     fail_msg: "Invalid plan change window hours. Must be 0-23 and start hour must be different from end hour."
+#     success_msg: "Plan change window hours validated successfully."
 
-- name: Display plan change window configuration
-  debug:
-    msg: |
-      Plan Change Window Configuration:
-      - Start Hour: {{ plan_change_start_hour }}:00 UTC
-      - End Hour: {{ plan_change_end_hour }}:00 UTC
-      {% if plan_change_start_hour > plan_change_end_hour %}
-      - Window spans midnight ({{ plan_change_start_hour }}:00 UTC to {{ plan_change_end_hour }}:00 UTC next day)
-      {% else %}
-      - Window is {{ plan_change_start_hour }}:00 UTC to {{ plan_change_end_hour }}:00 UTC same day
-      {% endif %}
+# - name: Display plan change window configuration
+#   debug:
+#     msg: |
+#       Plan Change Window Configuration:
+#       - Start Hour: {{ plan_change_start_hour }}:00 UTC
+#       - End Hour: {{ plan_change_end_hour }}:00 UTC
+#       {% if plan_change_start_hour > plan_change_end_hour %}
+#       - Window spans midnight ({{ plan_change_start_hour }}:00 UTC to {{ plan_change_end_hour }}:00 UTC next day)
+#       {% else %}
+#       - Window is {{ plan_change_start_hour }}:00 UTC to {{ plan_change_end_hour }}:00 UTC same day
+#       {% endif %}
 
 - name: Ensure OPA policies directory exists
   file:
