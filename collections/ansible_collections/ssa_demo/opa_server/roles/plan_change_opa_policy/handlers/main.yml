@@ -4,7 +4,7 @@
 - name: validate opa policies
   shell: |
     find {{ opa_policies_dir }} -name "*.rego" -exec opa fmt --diff {} \;
-    opa test {{ opa_policies_dir }}
+    {{ opa_binary_path }} test {{ opa_policies_dir }}
   # become: true
   # become_user: "{{ opa_user }}"
   when: validate_policies | bool

@@ -3,6 +3,7 @@ opa_policies_dir: "/var/lib/opa/policies"
 opa_user: "opa"
 opa_group: "opa"
 opa_service_name: "opa"
+opa_binary_path: "/usr/local/bin/opa"
 
 # Plan change window configuration (UTC hours)
 plan_change_start_hour: 12  # 12:00 UTC (5 PM EST)
